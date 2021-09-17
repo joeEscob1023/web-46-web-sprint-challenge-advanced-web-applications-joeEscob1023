@@ -1,23 +1,77 @@
 import React from "react";
+import axios from "axios";
 
-const Login = () => {
+class Login extends React.Component {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
-  const error = "";
+  state = {
+    credentials: {
+      username: "",
+      password: "",
+      error: "",
+    },
+  };
+
+  handleChange = (e) => {
+    this.setState({
+      credentials: {
+        ...this.state.credentials,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  login = (e) => {
+    e.preventDefault();
+
+    axios
+      .post("http://localhost:5000/api/login", this.state.credentials)
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", res.data.role);
+        localStorage.setItem("username", res.data.username);
+        this.props.history.push("/BubblePage");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   //replace with error state
 
-  return (
-    <div>
-      <h1>Welcome to the Bubble App!</h1>
-      <div data-testid="loginForm" className="login-form">
-        <h2>Build login form here</h2>
-      </div>
+  render() {
+    return (
+      <div>
+        <h1>Welcome to the Bubble App!</h1>
+        <div data-testid="loginForm" className="login-form">
+          <form onSubmit={this.login}>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={this.state.credentials.username}
+              onChange={this.handleChange}
+            />
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={this.state.credentials.password}
+              onChange={this.handleChange}
+            />
+            <button id="submit">Log in</button>
+          </form>
+        </div>
 
-      <p id="error" className="error">{error}</p>
-    </div>
-  );
-};
+        <p id="error" className="error">
+          {this.state.credentials.error}
+        </p>
+      </div>
+    );
+  }
+}
 
 export default Login;
 
