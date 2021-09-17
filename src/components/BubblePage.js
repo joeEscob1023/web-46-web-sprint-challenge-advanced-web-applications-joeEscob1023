@@ -13,6 +13,7 @@ const BubblePage = () => {
   const { push } = useHistory;
 
   useEffect(() => {
+    //an error said I used to use the new keyword in order to use fetchColorService
     new fetchColorService();
   }, []);
 
