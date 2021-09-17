@@ -20,7 +20,7 @@ function App() {
           <Link to="/login">Login</Link>
         </header>
         <Switch>
-          <PrivateRoute exact path="protected" component={BubblePage} />
+          <PrivateRoute exact path="/protected" component={BubblePage} />
           <Route path="/login" component={Login} />
           <Route path="/" component={Login} />
         </Switch>
